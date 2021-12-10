@@ -1,14 +1,14 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable  } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
 
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
+// import 'rxjs/add/operator/catch';
+// import 'rxjs/add/observable/throw';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
