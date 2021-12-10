@@ -1,9 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, ErrorHandler, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HandlerErroService } from '@app/_services/handler-error.service';
+import { error } from '@angular/compiler/src/util';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
@@ -16,13 +20,14 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private handlerErroService: HandlerErroService
     ) { }
 
     ngOnInit() {
         this.form = this.formBuilder.group({
             user_nome: ['', Validators.required],
-            user_email: ['', Validators.required],
+            // user_email: ['', Validators.required],
             user_accessKey: ['', Validators.required]
         });
     }
@@ -41,8 +46,10 @@ export class LoginComponent implements OnInit {
             return;
         }
 
+        error: HttpErrorResponse ;
+        
         this.loading = true;
-        this.accountService.login(this.f.user_nome.value, this.f.user_email.value, this.f.user_accessKey.value)
+        this.accountService.login(this.f.user_nome.value, this.f.user_accessKey.value)
             .pipe(first())
             .subscribe({
                 next: () => {
@@ -51,9 +58,14 @@ export class LoginComponent implements OnInit {
                     this.router.navigateByUrl(returnUrl);
                 },
                 error: error => {
-                    this.alertService.error(error);
+                    this.alertService.error(JSON.stringify(error));
                     this.loading = false;
                 }
             });
     }
+
+    private handleError(err: HttpErrorResponse) {
+        console.log(err.message);
+        return Observable.throw(err.message);
+      }
 }

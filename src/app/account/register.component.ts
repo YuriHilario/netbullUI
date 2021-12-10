@@ -23,7 +23,8 @@ export class RegisterComponent implements OnInit {
         this.form = this.formBuilder.group({
             user_nome: ['', Validators.required],
             user_email: ['', Validators.required],
-            user_accessKey: ['', [Validators.required, Validators.minLength(6)]]
+            user_accessKey: ['', [Validators.required, Validators.minLength(6)]],
+            user_reSenha: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
 
@@ -41,18 +42,23 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
-        this.loading = true;
-        this.accountService.register(this.form.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    this.alertService.success('Registro realizado com sucesso.', { keepAfterRouteChange: true });
-                    this.router.navigate(['../login'], { relativeTo: this.route });
-                },
-                error: error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                }
-            });
+        if (this.form.controls.user_reSenha.value == this.form.controls.user_accessKey.value) {
+            this.loading = true;
+            this.accountService.register(this.form.value)
+                .pipe(first())
+                .subscribe({
+                    next: () => {
+                        this.alertService.success('Cadastro realizado com sucesso.', { keepAfterRouteChange: true });
+                        this.router.navigate(['../login'], { relativeTo: this.route });
+                    },
+                    error: error => {
+                        this.alertService.error(error);
+                        this.loading = false;
+                    }
+                });
+        } else {
+            this.alertService.error("Senhas são diferentes.");
+            this.loading = false;
+        }
     }
 }

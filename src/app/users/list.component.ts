@@ -23,5 +23,10 @@ export class ListComponent implements OnInit {
             .subscribe(() => this.users = this.users.filter(x => x.id !== id));
             
         this.accountService.getAll();
+        this.load()
     }
+
+    load() {
+        location.reload()
+      }
 }

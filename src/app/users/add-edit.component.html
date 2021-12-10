@@ -1,4 +1,4 @@
-﻿<h1 *ngIf="isAddMode">Add User</h1>
+﻿<h1 *ngIf="isAddMode">Adicionar novo usuário</h1>
 <h1 *ngIf="!isAddMode">Edit User</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-row">
@@ -31,7 +31,7 @@
         </div>
         <div class="form-group col">
             <label for="user_reSenha">
-                Repita Senha
+                Repita a Senha
                 <em *ngIf="!isAddMode">(Deixa em branco para manter a mesma senha)</em>
             </label>
             <input type="password" formControlName="user_reSenha" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.user_reSenha.errors }" />

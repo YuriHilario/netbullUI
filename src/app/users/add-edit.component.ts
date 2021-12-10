@@ -67,12 +67,6 @@ export class AddEditComponent implements OnInit {
         }
     }
 
-    public console(){
-        console.log(this.form.controls.user_reSenha.value);
-        console.log(this.form.controls.user_accessKey.value);
-    }
-    
-
     private createUser() {
         if(this.form.controls.user_reSenha.value == this.form.controls.user_accessKey.value){
             this.accountService.register(this.form.value)

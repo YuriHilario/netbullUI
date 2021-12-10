@@ -27,11 +27,15 @@ export class AccountService {
         return this.userSubject.value;
     }
 
-    login(user_nome, user_email, user_accessKey) {
-        return this.http.post<User>(`${environment.apiUrl}/Conta/v1/login`, { user_nome, user_email,user_accessKey })
+    login(user_nome, user_accessKey) {
+        return this.http.post<User>(`${environment.apiUrl}/Conta/v1/login`, { user_nome, user_accessKey })
             .pipe(map(user => {
+                sessionStorage.clear();
+                sessionStorage.setItem('user_nome', user_nome);
+                console.log(user_nome);
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
+                // sessionStorage.setItem('user_nome', user.user_nome.toString());
                 this.userSubject.next(user);
                 return user;
             }));
@@ -39,6 +43,7 @@ export class AccountService {
 
     logout() {
         // remove user from local storage and set current user to null
+        sessionStorage.removeItem('user_nome');
         localStorage.removeItem('user');
         this.userSubject.next(null);
         this.router.navigate(['/account/login']);
@@ -46,6 +51,11 @@ export class AccountService {
 
     register(user: User) {
         return this.http.post(`${environment.apiUrl}/Conta/v1/registrar`, user);
+    }
+
+    alterarSenha(user: User) {
+        console.log(JSON.stringify(user));
+        return this.http.patch(`${environment.apiUrl}/Conta/v1/alterarSenha`, user);
     }
 
     getAll() {
@@ -73,7 +83,7 @@ export class AccountService {
     // }
 
     delete(id: number) {
-        return this.http.delete(`${environment.apiUrl}/Conta/${id}`)
+        return this.http.delete(`${environment.apiUrl}/Conta/v1/delete/${id}`)
             .pipe(map(x => {
                 // auto logout if the logged in user deleted their own record
                 if (id == this.userValue.user_id) {

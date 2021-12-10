@@ -1,5 +1,5 @@
-﻿<h1>Users</h1>
-<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
+﻿<h1>Usuários</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Novo usuário</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -15,11 +15,11 @@
             <td>{{user.user_nome}}</td>
             <td>{{user.user_email}}</td>
             <td style="white-space: nowrap">
-                <a routerLink="edit/{{user.user_id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <!-- <a routerLink="edit/{{user.user_id}}" class="btn btn-sm btn-primary mr-1">Edit</a> -->
                 <button (click)="deleteUser(user.user_id)" class="btn btn-sm btn-danger btn-delete-user">
                     <!--[disabled]="user.isDeleting" <span *ngIf="user.isDeleting" 
                         class="spinner-border spinner-border-sm"></span> -->
-                    <span>Delete</span>
+                    <span>Excluir</span>
                 </button>
             </td>
         </tr>
