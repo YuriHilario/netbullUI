@@ -28,7 +28,7 @@ export class AccountService {
     }
 
     login(user_nome, user_accessKey) {
-        return this.http.post<User>(`${environment.apiUrl}/Conta/v1/login`, { user_nome, user_accessKey })
+        return this.http.post<User>(`${environment.apiUrl}/api/Conta/login`, { user_nome, user_accessKey })
             .pipe(map(user => {
                 sessionStorage.clear();
                 sessionStorage.setItem('user_nome', user_nome);
@@ -50,16 +50,16 @@ export class AccountService {
     }
 
     register(user: User) {
-        return this.http.post(`${environment.apiUrl}/Conta/v1/registrar`, user);
+        return this.http.post(`${environment.apiUrl}/api/Conta/registrar`, user);
     }
 
     alterarSenha(user: User) {
         console.log(JSON.stringify(user));
-        return this.http.patch(`${environment.apiUrl}/Conta/v1/alterarSenha`, user);
+        return this.http.patch(`${environment.apiUrl}/api/Conta/alterarSenha`, user);
     }
 
     getAll() {
-        return this.http.get<User[]>(`${environment.apiUrl}/Conta`);
+        return this.http.get<User[]>(`${environment.apiUrl}/api/Conta`);
     }
 
     // getById(id: string) {
@@ -83,7 +83,7 @@ export class AccountService {
     // }
 
     delete(id: number) {
-        return this.http.delete(`${environment.apiUrl}/Conta/v1/delete/${id}`)
+        return this.http.delete(`${environment.apiUrl}/api/Conta/delete/${id}`)
             .pipe(map(x => {
                 // auto logout if the logged in user deleted their own record
                 if (id == this.userValue.user_id) {
