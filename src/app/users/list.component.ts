@@ -6,6 +6,8 @@ import { AccountService } from '@app/_services';
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     users = null;
+    p : Number = 1 ;
+    count : Number = 5;
 
     constructor(private accountService: AccountService) {}
 

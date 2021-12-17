@@ -11,7 +11,8 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
-import { HandlerErroService } from '../app/_services/handler-error.service';;
+import { HandlerErroService } from '../app/_services/handler-error.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { HandlerErroService } from '../app/_services/handler-error.service';;
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
-        AppRoutingModule
+        AppRoutingModule,
+        NgxPaginationModule
     ],
     declarations: [
         AppComponent,

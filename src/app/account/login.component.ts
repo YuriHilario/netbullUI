@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HandlerErroService } from '@app/_services/handler-error.service';
 import { error } from '@angular/compiler/src/util';
 
@@ -58,14 +58,10 @@ export class LoginComponent implements OnInit {
                     this.router.navigateByUrl(returnUrl);
                 },
                 error: error => {
-                    this.alertService.error(JSON.stringify(error));
+                    this.alertService.error(error);
                     this.loading = false;
                 }
             });
     }
 
-    private handleError(err: HttpErrorResponse) {
-        console.log(err.message);
-        return Observable.throw(err.message);
-      }
 }

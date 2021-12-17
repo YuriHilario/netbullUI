@@ -5,12 +5,9 @@ import { ClientesService } from '../_services/clientes.service';
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     clientes = [];
-
-    listarTipo = [
-        { codigo: 0, descricao: '' },
-        { codigo: 1, descricao: 'Pessoa Jurídica' },
-      ];
-
+    p : Number = 1 ;
+    count : Number = 5;
+  
     constructor(private clienteService: ClientesService) {}
 
     ngOnInit() {

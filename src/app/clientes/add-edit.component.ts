@@ -1,106 +1,103 @@
-﻿// import { Component, OnInit } from '@angular/core';
-// import { Router, ActivatedRoute } from '@angular/router';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { first } from 'rxjs/operators';
+﻿import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { AlertService, ClientesService } from '@app/_services';
 
-// // import { AccountService, AlertService } from '@app/_services';
+@Component({ templateUrl: 'add-edit.component.html' })
+export class AddEditComponent implements OnInit {
+    form: FormGroup;
+    id: string;
+    isAddMode: boolean;
+    loading = false;
+    submitted = false;
+    // tipoSelecionado : number = 0;
 
-// @Component({ templateUrl: 'add-edit.component.html' })
-// export class AddEditComponent implements OnInit {
-//     form: FormGroup;
-//     id: string;
-//     isAddMode: boolean;
-//     loading = false;
-//     submitted = false;
+    tipoCliente = [
+        { codigo: 0, descricao: 'Pessoa Física' },
+        { codigo: 1, descricao: 'Pessoa Jurídica' },
+    ];
 
-//     constructor(
-//         private formBuilder: FormBuilder,
-//         private route: ActivatedRoute,
-//         private router: Router,
-//         private accountService: AccountService,
-//         private alertService: AlertService
-//     ) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private clienteService: ClientesService,
+        private alertService: AlertService
+    ) { }
 
-//     ngOnInit() {
-//         this.id = this.route.snapshot.params['id'];
-//         this.isAddMode = !this.id;
-        
-//         // password not required in edit mode
-//         const passwordValidators = [Validators.minLength(6)];
-//         if (this.isAddMode) {
-//             passwordValidators.push(Validators.required);
-//         }
+    ngOnInit() {
+        this.id = this.route.snapshot.params['id'];
+        this.isAddMode = !this.id;
 
-//         this.form = this.formBuilder.group({
-//             user_nome: ['', Validators.required],
-//             user_email: ['', Validators.required],
-//             user_accessKey: ['', [Validators.required, Validators.minLength(6)]],
-//             user_reSenha: ['', [Validators.required, Validators.minLength(6)]]
-//         });
+        // password not required in edit mode
+        const passwordValidators = [Validators.minLength(6)];
+        if (this.isAddMode) {
+            passwordValidators.push(Validators.required);
+        }
 
-//         // if (!this.isAddMode) {
-//         //     this.accountService.getById(this.id)
-//         //         .pipe(first())
-//         //         .subscribe(x => this.form.patchValue(x));
-//         // }
-//     }
+        this.form = this.formBuilder.group({
+            pessoa_documento: ['', Validators.required],
+            pessoa_nome: ['', Validators.required],
+            pessoa_tipopessoa: ['', Validators.required],
+        });
 
-//     // convenience getter for easy access to form fields
-//     get f() { return this.form.controls; }
+        // if (!this.isAddMode) {
+        //     this.accountService.getById(this.id)
+        //         .pipe(first())
+        //         .subscribe(x => this.form.patchValue(x));
+        // }
+    }
 
-//     onSubmit() {
-//         this.submitted = true;
+    // convenience getter for easy access to form fields
+    get f() { return this.form.controls; }
 
-//         // reset alerts on submit
-//         this.alertService.clear();
+    onSubmit() {
+        this.submitted = true;
 
-//         // stop here if form is invalid
-//         if (this.form.invalid) {
-//             return;
-//         }
+        // reset alerts on submit
+        this.alertService.clear();
 
-//         this.loading = true;
-//         if (this.isAddMode) {
-//             this.createUser();
-//         } else {
-//             // this.updateUser();
-//         }
-//     }
+        // stop here if form is invalid
+        if (this.form.invalid) {
+            return;
+        }
 
-//     private createUser() {
-//         if(this.form.controls.user_reSenha.value == this.form.controls.user_accessKey.value){
-//             this.accountService.register(this.form.value)
-//             .pipe(first())
-//             .subscribe({
-//                 next: () => {
-//                     this.alertService.success('Usuário criado com sucesso', { keepAfterRouteChange: true });
-//                     this.router.navigate(['../'], { relativeTo: this.route });
-//                 },
-//                 error: err => {
-//                     this.alertService.error(err);
-//                     this.loading = false;
-//                     console.log(err);
-//                 }
-//             });
-//         }else{
-//             this.alertService.error("Senhas são diferentes.");
-//             this.loading = false;
-//         }
-       
-//     }
+        this.loading = true;
+        if (this.isAddMode) {
+            this.createCliente();
+        } else {
+            // this.updateUser();
+        }
+    }
 
-//     // private updateUser() {
-//     //     this.accountService.update(this.id, this.form.value)
-//     //         .pipe(first())
-//     //         .subscribe({
-//     //             next: () => {
-//     //                 this.alertService.success('Update successful', { keepAfterRouteChange: true });
-//     //                 this.router.navigate(['../../'], { relativeTo: this.route });
-//     //             },
-//     //             error: error => {
-//     //                 this.alertService.error(error);
-//     //                 this.loading = false;
-//     //             }
-//     //         });
-//     // }
-// }
+    private createCliente() {
+        this.clienteService.cadastrarCliente(this.form.value)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Cliente criado com sucesso', { keepAfterRouteChange: true });
+                    this.router.navigate(['../'], { relativeTo: this.route });
+                },
+                error: err => {
+                    this.alertService.error(err);
+                    this.loading = false;
+                }
+            });
+    }
+
+    // private updateUser() {
+    //     this.accountService.update(this.id, this.form.value)
+    //         .pipe(first())
+    //         .subscribe({
+    //             next: () => {
+    //                 this.alertService.success('Update successful', { keepAfterRouteChange: true });
+    //                 this.router.navigate(['../../'], { relativeTo: this.route });
+    //             },
+    //             error: error => {
+    //                 this.alertService.error(error);
+    //                 this.loading = false;
+    //             }
+    //         });
+    // }
+}

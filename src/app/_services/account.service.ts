@@ -54,7 +54,6 @@ export class AccountService {
     }
 
     alterarSenha(user: User) {
-        console.log(JSON.stringify(user));
         return this.http.patch(`${environment.apiUrl}/api/Conta/alterarSenha`, user);
     }
 

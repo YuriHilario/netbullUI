@@ -20,4 +20,8 @@ export class ClientesService {
     return this.http.get<Cliente[]>(`${environment.apiUrl}/api/Pessoa`);
   }
 
+  cadastrarCliente(cli: Cliente) {
+    return this.http.post(`${environment.apiUrl}/api/Pessoa`, cli);
+}
+
 }
