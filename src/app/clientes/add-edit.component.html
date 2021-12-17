@@ -2,24 +2,35 @@
 <h1 *ngIf="!isAddMode">Editar Cliente</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-row">
-        <!-- <ng-select [items]="tipoCliente" 
-           bindLabel="descricao" 
-           bindValue="codigo" 
-           [(ngModel)]="pessoa_tipopessoa">
-        </ng-select> -->
-
-        <div class="form-group col">
-            <label for="user_nome">Usuário</label>
-            <input type="text" formControlName="user_nome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.user_nome.errors }" />
-            <div *ngIf="submitted && f.user_nome.errors" class="invalid-feedback">
-                <div *ngIf="f.user_nome.errors.required">Usuário é obrigatório</div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="pessoa_documento">Documento</label>
+                <input type="text" formControlName="pessoa_documento" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.pessoa_documento.errors }" />
+                <div *ngIf="submitted && f.pessoa_documento.errors" class="invalid-feedback">
+                    <div *ngIf="f.pessoa_documento.errors.required">Documento é obrigatório</div>
+                </div>
             </div>
         </div>
-        <div class="form-group col">
-            <label for="user_email">E-mail</label>
-            <input type="text" formControlName="user_email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.user_email.errors }" />
-            <div *ngIf="submitted && f.user_email.errors" class="invalid-feedback">
-                <div *ngIf="f.user_email.errors.required">E-mail é obrigatório</div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="pessoa_nome">Nome</label>
+                <input type="text" formControlName="pessoa_nome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.pessoa_nome.errors }" />
+                <div *ngIf="submitted && f.pessoa_nome.errors" class="invalid-feedback">
+                    <div *ngIf="f.pessoa_nome.errors.required">Nome é obrigatório</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-4">
+            <div class="form-group">
+                <!-- <label for="user_nome">Tipo CLiente</label> -->
+                <label class="control-label " for="tipocli">Tipo CLiente</label>
+                <ng-select [items]="tipoCliente" 
+                    bindLabel="descricao" 
+                    bindValue="codigo" 
+                    [(ngModel)]="tipoSelecionado"
+                    formControlName="pessoa_tipopessoa">
+                </ng-select>
             </div>
         </div>
     </div>

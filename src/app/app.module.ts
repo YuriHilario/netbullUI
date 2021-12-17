@@ -14,7 +14,6 @@ import { HomeComponent } from './home';
 import { HandlerErroService } from '../app/_services/handler-error.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 
-
 @NgModule({
     imports: [
         BrowserModule,
@@ -30,7 +29,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
           HandlerErroService,
 
         // provider used to create fake backend

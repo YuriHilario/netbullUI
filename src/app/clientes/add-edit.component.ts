@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, ClientesService } from '@app/_services';
+import { Cliente, User } from '@app/_models';
+import { HandlerErroService } from '@app/_services/handler-error.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
@@ -11,7 +13,7 @@ export class AddEditComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
-    // tipoSelecionado : number = 0;
+    tipoSelecionado : number;
 
     tipoCliente = [
         { codigo: 0, descricao: 'Pessoa Física' },
@@ -23,7 +25,8 @@ export class AddEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private clienteService: ClientesService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private handler : HandlerErroService
     ) { }
 
     ngOnInit() {
@@ -47,6 +50,7 @@ export class AddEditComponent implements OnInit {
         //         .pipe(first())
         //         .subscribe(x => this.form.patchValue(x));
         // }
+        this.tipoSelecionado = 0;
     }
 
     // convenience getter for easy access to form fields
@@ -72,6 +76,7 @@ export class AddEditComponent implements OnInit {
     }
 
     private createCliente() {
+        this.form.controls.pessoa_tipopessoa.value;
         this.clienteService.cadastrarCliente(this.form.value)
             .pipe(first())
             .subscribe({
@@ -80,7 +85,11 @@ export class AddEditComponent implements OnInit {
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
                 error: err => {
+                   let error =  this.handler.handler(err);
+                   console.log(err);
+                   error.forEach( err => {
                     this.alertService.error(err);
+                   });
                     this.loading = false;
                 }
             });
