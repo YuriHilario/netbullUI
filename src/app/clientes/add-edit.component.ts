@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, ClientesService } from '@app/_services';
-import { Cliente, User } from '@app/_models';
+import { Cliente, Telefone, User } from '@app/_models';
 import { HandlerErroService } from '@app/_services/handler-error.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
@@ -14,6 +14,8 @@ export class AddEditComponent implements OnInit {
     loading = false;
     submitted = false;
     tipoSelecionado : number;
+    telefone : Telefone;
+    cliente : Cliente;
 
     tipoCliente = [
         { codigo: 0, descricao: 'Pessoa Física' },
